@@ -1,21 +1,29 @@
 package be.vdab.pizzaluigi.web;
 
 import be.vdab.pizzaluigi.entities.Pizza;
+import be.vdab.pizzaluigi.services.EuroService;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.List;
+import java.util.Map;
 
 import static org.junit.Assert.*;
 
+@RunWith(MockitoJUnitRunner.class)
 public class PizzaControllerTest {
 
     private PizzaController controller;
 
+    @Mock
+    private EuroService euroService;
+
     @Before
     public void before() {
-        controller = new PizzaController();
+        controller = new PizzaController(euroService);
     }
     @Test
     public void pizzaWerktSamenMetDeJspPizza() {
@@ -40,7 +48,6 @@ public class PizzaControllerTest {
     @Test
     public void pizzasGeeftPizzasDoor() {
         ModelAndView modelAndView = controller.pizzas();
-        assertTrue(modelAndView.getModel().get("pizzas") instanceof List);
+        assertTrue(modelAndView.getModel().get("pizzas") instanceof Map);
     }
-
 }

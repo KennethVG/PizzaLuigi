@@ -22,6 +22,8 @@
         <dd>${pizza.prijs}</dd>
         <dt>Pikant</dt>
         <dd>${pizza.pikant ? 'ja' : 'nee'}</dd>
+        <dt>In dollar</dt>
+        <dd>${inDollar}</dd>
     </dl>
 </c:if>
 </body>

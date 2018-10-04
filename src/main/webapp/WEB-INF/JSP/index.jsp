@@ -1,5 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" session="false" %>
-<%@taglib prefix='c' uri='http://java.sun.com/jsp/jstl/core'%>
+<%@taglib prefix='c' uri='http://java.sun.com/jsp/jstl/core' %>
 <html>
 <head>
     <c:import url='/WEB-INF/JSP/head.jsp'>
@@ -23,5 +23,9 @@
     <dd>${zaakvoerder.adres.straat} ${zaakvoerder.adres.huisNr}<br>
         ${zaakvoerder.adres.postcode} ${zaakvoerder.adres.gemeente}</dd>
 </dl>
+<c:if test='${not empty laatstBezocht}'>
+    <p>Je bezocht onze website laatst op ${laatstBezocht}.</p>
+</c:if>
+<p>Deze pagina werd ${aantalKeerBekeken} keer bekeken.</p>
 </body>
 </html>
