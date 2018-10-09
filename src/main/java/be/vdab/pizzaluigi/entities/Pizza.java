@@ -1,5 +1,8 @@
 package be.vdab.pizzaluigi.entities;
 
+import org.hibernate.validator.constraints.SafeHtml;
+import org.springframework.format.annotation.NumberFormat;
+
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PositiveOrZero;
@@ -10,10 +13,12 @@ public class Pizza {
     private long id;
 
     @NotBlank
+    @SafeHtml
     private String naam;
 
     @NotNull
     @PositiveOrZero
+    @NumberFormat(pattern = "0.00")
     private BigDecimal prijs;
 
     private boolean pikant;

@@ -20,5 +20,12 @@
     <form:input path='prijs' type='number' required='required' min='0'/>
     <form:checkbox path='pikant'/><form:label path='pikant'>Pikant</form:label>
     <input type='submit' value='Toevoegen' id='toevoegknop'>
-</form:form></body>
+</form:form>
+
+<script>
+    document.getElementById('pizzaform').onsubmit = function () {
+        document.getElementById('toevoegknop').disabled = true;
+    };
+</script>
+</body>
 </html>

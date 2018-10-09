@@ -1,7 +1,9 @@
 package be.vdab.pizzaluigi.web;
 
 import be.vdab.pizzaluigi.valueobjects.Adres;
+import be.vdab.pizzaluigi.valueobjects.DatumTijd;
 import be.vdab.pizzaluigi.valueobjects.Persoon;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,6 +21,13 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class IndexController {
 
     private final AtomicInteger aantalKeerBekeken = new AtomicInteger();
+
+    private final Identificatie identificatie;
+
+    @Autowired
+    public IndexController(Identificatie identificatie) {
+        this.identificatie = identificatie;
+    }
 
     @GetMapping
     public ModelAndView index(@CookieValue(name = "laatstBezocht", required = false) String laatstBezocht, HttpServletResponse response) {
@@ -39,8 +48,10 @@ public class IndexController {
                         new Adres("Grote markt", "3", 9700, "Oudenaarde"))).addObject("aantalKeerBekeken",
                 aantalKeerBekeken.incrementAndGet());
         if (laatstBezocht != null) {
-            modelAndView.addObject("laatstBezocht", laatstBezocht);
+            modelAndView.addObject("laatstBezocht", new DatumTijd(LocalDateTime.parse(laatstBezocht)));
         }
+
+        modelAndView.addObject("identificatie", identificatie);
         return modelAndView;
     }
 

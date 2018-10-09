@@ -9,6 +9,9 @@
 </head>
 <body>
 <c:import url='/WEB-INF/JSP/menu.jsp'/>
+<c:if test='${not empty param.boodschap}'>
+    <div class='boodschap'>${param.boodschap}</div>
+</c:if>
 <h1>Pizza's</h1>
 <ul class='zebra'>
     <c:forEach var='pizza' items='${pizzas}'>

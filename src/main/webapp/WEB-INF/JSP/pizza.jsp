@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@taglib prefix='c' uri='http://java.sun.com/jsp/jstl/core' %>
+<%@taglib prefix='spring' uri='http://www.springframework.org/tags'%>
 <html>
 <head>
     <c:import url='/WEB-INF/JSP/head.jsp'>
@@ -19,11 +20,11 @@
         <dt>Naam</dt>
         <dd>${pizza.naam}</dd>
         <dt>Prijs</dt>
-        <dd>${pizza.prijs}</dd>
+        <dd><spring:eval expression='pizza.prijs'/></dd>
         <dt>Pikant</dt>
         <dd>${pizza.pikant ? 'ja' : 'nee'}</dd>
         <dt>In dollar</dt>
-        <dd>${inDollar}</dd>
+        <dd>${inDollar.waarde}</dd>
     </dl>
 </c:if>
 </body>

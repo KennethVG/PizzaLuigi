@@ -3,6 +3,7 @@ package be.vdab.pizzaluigi.web;
 import be.vdab.pizzaluigi.entities.Pizza;
 import be.vdab.pizzaluigi.services.EuroService;
 import be.vdab.pizzaluigi.services.PizzaService;
+import be.vdab.pizzaluigi.valueobjects.Dollar;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
 import java.math.BigDecimal;
@@ -52,7 +54,7 @@ public class PizzaController {
         ModelAndView modelAndView = new ModelAndView(PIZZA_VIEW);
         pizzaService.read(id).ifPresent(pizza -> {
             modelAndView.addObject(pizza);
-            modelAndView.addObject("inDollar", euroService.naarDollar(pizza.getPrijs()));
+            modelAndView.addObject("inDollar", new Dollar(euroService.naarDollar(pizza.getPrijs())));
         });
 //        if (pizzas.containsKey(id)) {
 //            Pizza pizza = pizzas.get(id);
@@ -114,11 +116,14 @@ public class PizzaController {
     }
 
     @PostMapping("toevoegen")
-    public ModelAndView toevoegen(@Valid Pizza pizza, BindingResult bindingResult) {
+    public ModelAndView toevoegen(@Valid Pizza pizza, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
             return new ModelAndView(TOEVOEGEN_VIEW);
         }
         pizzaService.create(pizza);
+
+        redirectAttributes.addAttribute("boodschap", "Pizza  " + pizza.getNaam() + " toegevoegd");
+
         return new ModelAndView(REDIRECT_URL_NA_TOEVOEGEN);
     }
 }
