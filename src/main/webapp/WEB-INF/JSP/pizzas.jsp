@@ -11,33 +11,46 @@
 <c:import url='/WEB-INF/JSP/menu.jsp'/>
 <h1>Pizza's</h1>
 <ul class='zebra'>
-    <c:forEach var='entry' items='${pizzas}'>
-        <li>${entry.key}: ${entry.value.naam} ${entry.value.prijs}&euro;
-            <%--<c:if test='${entry.value.pikant}'>--%>
-                <%--pikant--%>
-            <%--</c:if>--%>
-
+    <c:forEach var='pizza' items='${pizzas}'>
+        <li>
+                ${pizza.id}: <c:out value='${pizza.naam}'/> ${pizza.prijs}&euro;
             <c:choose>
-                <c:when test='${entry.value.pikant}'>
-                    pikant
-                </c:when>
-                <c:otherwise>
-                    niet pikant
-                </c:otherwise>
+                <c:when test='${pizza.pikant}'>pikant</c:when>
+                <c:otherwise>niet pikant</c:otherwise>
             </c:choose>
-
-            <%--URL MET QUERY PARAMETER--%>
-            <%--<c:url value='/pizzas' var='url'>--%>
-                <%--<c:param name='id' value='${entry.key}'/>--%>
-            <%--</c:url>--%>
-
-            <%--URL MET PATH VARIABELE--%>
             <spring:url value='/pizzas/{id}' var='url'>
-                <spring:param name='id' value='${entry.key}'/>
+                <spring:param name='id' value='${pizza.id}'/>
             </spring:url>
             <a href='${url}'>Detail</a>
         </li>
     </c:forEach>
+    <%--<c:forEach var='entry' items='${pizzas}'>--%>
+        <%--<li>${entry.key}: ${entry.value.naam} ${entry.value.prijs}&euro;--%>
+            <%--&lt;%&ndash;<c:if test='${entry.value.pikant}'>&ndash;%&gt;--%>
+                <%--&lt;%&ndash;pikant&ndash;%&gt;--%>
+            <%--&lt;%&ndash;</c:if>&ndash;%&gt;--%>
+
+            <%--<c:choose>--%>
+                <%--<c:when test='${entry.value.pikant}'>--%>
+                    <%--pikant--%>
+                <%--</c:when>--%>
+                <%--<c:otherwise>--%>
+                    <%--niet pikant--%>
+                <%--</c:otherwise>--%>
+            <%--</c:choose>--%>
+
+            <%--&lt;%&ndash;URL MET QUERY PARAMETER&ndash;%&gt;--%>
+            <%--&lt;%&ndash;<c:url value='/pizzas' var='url'>&ndash;%&gt;--%>
+                <%--&lt;%&ndash;<c:param name='id' value='${entry.key}'/>&ndash;%&gt;--%>
+            <%--&lt;%&ndash;</c:url>&ndash;%&gt;--%>
+
+            <%--&lt;%&ndash;URL MET PATH VARIABELE&ndash;%&gt;--%>
+            <%--<spring:url value='/pizzas/{id}' var='url'>--%>
+                <%--<spring:param name='id' value='${entry.key}'/>--%>
+            <%--</spring:url>--%>
+            <%--<a href='${url}'>Detail</a>--%>
+        <%--</li>--%>
+    <%--</c:forEach>--%>
 </ul>
 </body>
 </html>
