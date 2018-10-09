@@ -1,12 +1,21 @@
 package be.vdab.pizzaluigi.entities;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.PositiveOrZero;
 import java.math.BigDecimal;
 
 public class Pizza {
 
     private long id;
+
+    @NotBlank
     private String naam;
+
+    @NotNull
+    @PositiveOrZero
     private BigDecimal prijs;
+
     private boolean pikant;
 
     public Pizza() {

@@ -1,15 +1,20 @@
 package be.vdab.pizzaluigi.web;
 
+import be.vdab.pizzaluigi.entities.Pizza;
 import be.vdab.pizzaluigi.services.EuroService;
 import be.vdab.pizzaluigi.services.PizzaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.validation.Valid;
 import java.math.BigDecimal;
+import java.util.List;
 
 @Controller
 @RequestMapping("pizzas")
@@ -21,6 +26,9 @@ public class PizzaController {
     private static final String PIZZAS_VIEW = "pizzas";
     private static final String PIZZA_VIEW = "pizza";
     private static final String PRIJZEN_VIEW = "prijzen";
+    private static final String VAN_TOT_PRIJS_VIEW = "vantotprijs";
+    private static final String TOEVOEGEN_VIEW = "toevoegen";
+    private static final String REDIRECT_URL_NA_TOEVOEGEN="redirect:/pizzas";
 
 //    private final List<Pizza> pizzas = Arrays.asList(
 //            new Pizza(1, "Prosciutto", BigDecimal.valueOf(4), true),
@@ -74,5 +82,43 @@ public class PizzaController {
                 .addObject("prijs", prijs)
                 .addObject("prijzen", pizzaService.findUniekePrijzen());
 //                        pizzas.values().stream().map(Pizza::getPrijs).collect(Collectors.toSet()));
+    }
+
+    @GetMapping(params = {"van", "tot"})
+    public ModelAndView findVanTotPrijs(@Valid VanTotPrijsForm form, BindingResult bindingResult) {
+        ModelAndView modelAndView = new ModelAndView(VAN_TOT_PRIJS_VIEW);
+        if (bindingResult.hasErrors()) {
+            return modelAndView;
+        }
+        List<Pizza> pizzas =
+                pizzaService.findByPrijsBetween(form.getVan(), form.getTot());
+        if (pizzas.isEmpty()) {
+            bindingResult.reject("geenPizzas");
+        } else {
+            modelAndView.addObject("pizzas", pizzas);
+        }
+        return modelAndView;
+    }
+
+    @GetMapping("vantotprijs")
+    public ModelAndView findVanTotPrijs() {
+        VanTotPrijsForm form = new VanTotPrijsForm();
+        form.setVan(BigDecimal.ZERO);
+        form.setTot(BigDecimal.ZERO);
+        return new ModelAndView(VAN_TOT_PRIJS_VIEW).addObject(form);
+    }
+
+    @GetMapping("toevoegen")
+    public ModelAndView toevoegen() {
+        return new ModelAndView(TOEVOEGEN_VIEW).addObject(new Pizza());
+    }
+
+    @PostMapping("toevoegen")
+    public ModelAndView toevoegen(@Valid Pizza pizza, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return new ModelAndView(TOEVOEGEN_VIEW);
+        }
+        pizzaService.create(pizza);
+        return new ModelAndView(REDIRECT_URL_NA_TOEVOEGEN);
     }
 }
